@@ -7,6 +7,7 @@ from tensorflow.python.ops import rnn, rnn_cell
 from PIL import Image
 import scipy.misc
 import time
+import sys
 
 
 
@@ -17,7 +18,7 @@ nclass = 151
 ##############################################################################
 
 ########################## LEARNING RATE PARAMETERS ##########################
-learning_rate = 0.0005
+learning_rate = 0.0005 * (0.75)**5
 lr_decay_rate = 0.75
 lr_decay_step = 300
 ##############################################################################
@@ -149,7 +150,24 @@ def getTrainingData(batch_size):
 
     return data,label
 
+#both inputs are of size [batch_size X 384 X 384, 151]
+def calculateKAccuracy(Final_output, targets_, k = 5):
 
+	#find the top k most probable labels for each pixel
+	#size of Final_output: [batch_size X 384 X 384, 151]
+	#size of indices: [batch_size X 384 X 384, k]
+	(_, indices) = tf.nn.top_k(Final_output, k = k)
+
+	#per pixel we have k values
+	truth_matrix = tf.equal(indices, tf.argmax(targets_, axis = 1))
+	
+	#change true, false to 1,0
+	truth_matrix = tf.cast(truth_matrix, tf.float32)
+
+	#any of k predicted labels was right
+	truth_matrix = tf.sum(truth_matrix, axis = 1)
+
+	return tf.reduce_mean(truth_matrix)
 
 
 print("-----------------------------INPUT LAYER-----------------------------------")
@@ -159,7 +177,7 @@ print("-------------------------------------------------------------------------
 
 targets = tf.placeholder(tf.float32,shape=(None,dim1,dim2,nclass))
 targets_ = tf.reshape(targets,[-1,nclass])
-valid = tf.reduce_sum(targets_, axis = 1)
+#valid = tf.reduce_sum(targets_, axis = 1)
 
 print("--------------------CONVOLUTION LAYER (RELU)-------------------------------")
 
@@ -427,6 +445,7 @@ deconv4 = tf.layers.conv2d_transpose(deconv5, filters=151, strides=[2,2], kernel
 print(deconv4.get_shape())
 print("-----------------------------------------------------------------------------------------------------------")
 
+
 #[batch_size X 384 X 384, 151]
 l_reshape = tf.reshape(deconv4, [-1,151])
 print(l_reshape.get_shape())
@@ -457,7 +476,7 @@ correct_prediction = tf.equal(tf.argmax(targets_,1), tf.argmax(Final_output,1))
 
 #mean pixel accuraacy
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-
+topkaccuracy = calculateKAccuracy(Final_output, targets_)
 
 sess = tf.Session()
 saver = tf.train.Saver()
@@ -466,12 +485,12 @@ sess.run(init)
 
 for i in range(training_iters) :
 
-	 #restore the model if needed
-    # if i == 0 :
-    #
-    # 	#prints the checkpoint used to restore the model
-    # 	print(tf.train.latest_checkpoint("Checkpoints/"))
-    # 	saver.restore(sess, tf.train.latest_checkpoint("Checkpoints/"))
+	#restore the model if needed
+    if i == 0 and str(sys.argv[1]) == 'restore':
+    
+    	#prints the checkpoint used to restore the model
+    	print(tf.train.latest_checkpoint("Checkpoints/"))
+    	saver.restore(sess, tf.train.latest_checkpoint("Checkpoints/"))
     
     data_x, data_y = getTrainingData(batch_size)
     data_x = normalize(data_x)
@@ -479,9 +498,16 @@ for i in range(training_iters) :
 
     if i % displayStep == 0 :
         print('{0} steps reached'.format(i))
-        correct = sess.run([accuracy], feed_dict = {l_in: data_x, targets: data_y})
-        print('After {0} steps the accuracy is {1}'.format(i, correct[0]))
-        flogs.write('After {0} steps the accuracy is {1}\n'.format(i,correct[0]))
+        (correct, correctk) = sess.run([accuracy, topkaccuracy], feed_dict = {l_in: data_x, targets: data_y})
+        
+
+        #stdout
+        print('After {0} steps the mean pixel accuracy is {1}'.format(i, correct))
+        print('After {0} steps the top 5 accuracy is {1}'.format(i, correctk))
+
+        #write to log file
+        flogs.write('After {0} steps the accuracy is {1}\n'.format(i, correct))
+        flogs.write('After {0} steps the accuracy is {1}\n'.format(i, correctk))
 
     if i % CheckpointStep == 0 or i == training_iters - 1:
         save_path = saver.save(sess, checkPointFile, global_step = i + 1)

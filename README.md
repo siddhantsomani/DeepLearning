@@ -6,4 +6,3 @@
 
 Dataset used: [ADE20K dataset](http://groups.csail.mit.edu/vision/datasets/ADE20K/)
 
-

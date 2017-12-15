@@ -1,0 +1,4 @@
+scipy==0.16.1
+numpy==1.10.4
+Pillow==4.3.0
+tensorflow==1.4.1

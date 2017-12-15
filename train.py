@@ -96,10 +96,10 @@ def readImage(index) :
         img = img.resize((384,384))
         annotation = np.array(annotation.resize( (384,384) ) )
         img = np.array(img)
-        
+
         img = img.astype(dtype=np.float32)
         annotation = annotation.astype(dtype=np.float32)
-        
+
         return img,annotation
     except Exception as e:
         print(str(e))
@@ -129,7 +129,7 @@ def getTrainingData(batch_size):
 
     #images used in current batch
     #print(dataindex)
-    
+
     ##########################################
     #data contains images
     data = []
@@ -171,10 +171,10 @@ with tf.name_scope('conv1_1') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv1_1 = tf.nn.relu(out, name=scope)
-    
+
     print(conv1_1.get_shape())
 print("---------------------------------------------------------------------------")
-    
+
 
 print("--------------------CONVOLUTION LAYER (RELU) -------------------------------")
 
@@ -187,10 +187,10 @@ with tf.name_scope('conv1_2') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv1_2 = tf.nn.relu(out, name=scope)
-    
+
     print(conv1_2.get_shape())
 print("-----------------------------------------------------------------------------")
-    
+
 
 print("-----------------------------------POOL---------------------------------------")
 
@@ -271,9 +271,9 @@ with tf.name_scope('conv2_1') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv2_1 = tf.nn.relu(out, name=scope)
-    
+
     print(conv2_1.get_shape())
-    
+
 
 print("--------------------------------------------------------------------------------------------------------")
 print("--------------------------------------CONVOLUTION LAYER (RELU)------------------------------------------")
@@ -287,11 +287,11 @@ with tf.name_scope('conv2_1_1') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv2_1_1 = tf.nn.relu(out, name=scope)
-    
+
     print(conv2_1_1.get_shape())
 print("---------------------------------------------------------------")
 
-    
+
 
 print("----------------------------------------CONVOLUTION LAYER (RELU)-----------------------------------------")
 # conv2_2
@@ -303,11 +303,11 @@ with tf.name_scope('conv2_2') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv2_2 = tf.nn.relu(out, name=scope)
-    
+
     print(conv2_2.get_shape())
 
 print("----------------------------------------------------------------------------------------------------------")
-    
+
 
 print("--------------------------------------------POOL----------------------------------------------------------")
 # pool2
@@ -334,13 +334,13 @@ with tf.name_scope('conv3_1') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv3_1 = tf.nn.relu(out, name=scope)
-    
+
     print(conv3_1.get_shape())
 
 print("-----------------------------------------------------------------------------------------------------------")
 
-    
-    
+
+
 print("----------------------------------------CONVOLUTION LAYER (RELU)-------------------------------------------")
 # conv3_2
 with tf.name_scope('conv3_2') as scope:
@@ -351,11 +351,11 @@ with tf.name_scope('conv3_2') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv3_2 = tf.nn.relu(out, name=scope)
-    
+
     print(conv3_2.get_shape())
-    
-    
-    
+
+
+
 print("-----------------------------------------------------------------------------------------------------------")
 
 print("--------------------------------------------------POOL-----------------------------------------------------")
@@ -384,15 +384,15 @@ with tf.name_scope('conv4_1') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv4_1 = tf.nn.relu(out, name=scope)
-    
+
     print(conv4_1.get_shape())
-    
+
 
 print("-----------------------------------------------------------------------------------------------------------")
 
 
 print("------------------------------------CONVOLUTION LAYER (RELU)-----------------------------------------------")
-    
+
 # conv4_2
 with tf.name_scope('conv4_2') as scope:
     kernel = tf.Variable(tf.truncated_normal([3, 3, 512, 512], dtype=tf.float32,
@@ -402,11 +402,11 @@ with tf.name_scope('conv4_2') as scope:
                          trainable=True, name='biases')
     out = tf.nn.bias_add(conv, biases)
     conv4_2 = tf.nn.relu(out, name=scope)
-    
+
     print(conv4_2.get_shape())
-    
-    
-    
+
+
+
 print("-----------------------------------------------------------------------------------------------------------")
 
 print("###########################################################################################################")
@@ -465,13 +465,13 @@ init = tf.global_variables_initializer()
 sess.run(init)
 
 for i in range(training_iters) :
-	   
-	 #restore the model if needed	 
-    if i == 0 :
 
-    	#prints the checkpoint used to restore the model
-    	print(tf.train.latest_checkpoint("Checkpoints/"))
-    	saver.restore(sess, tf.train.latest_checkpoint("Checkpoints/"))
+	 #restore the model if needed
+    # if i == 0 :
+    #
+    # 	#prints the checkpoint used to restore the model
+    # 	print(tf.train.latest_checkpoint("Checkpoints/"))
+    # 	saver.restore(sess, tf.train.latest_checkpoint("Checkpoints/"))
     
     data_x, data_y = getTrainingData(batch_size)
     data_x = normalize(data_x)
@@ -486,7 +486,7 @@ for i in range(training_iters) :
     if i % CheckpointStep == 0 or i == training_iters - 1:
         save_path = saver.save(sess, checkPointFile, global_step = i + 1)
         print("Model saved in file: {0}".format(save_path))
-    
+
     ce = sess.run([cross_entropy],feed_dict = {l_in: data_x, targets: data_y})[0]
     print("Loss:{0}".format(ce))
 

@@ -1,6 +1,6 @@
 # Deep Learning
 
-### COMSW4995 - Deep Learning.
+### COMSW4995 - Deep Learning
 
 ### Final Project - Scene Parsing using Image Segmentation and Semantic Labelling
 

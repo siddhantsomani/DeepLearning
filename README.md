@@ -61,6 +61,13 @@ Notes:
 <p> Original Annotations</p>
 <img src="attachments/test2_annotation_original.png" width="350"/>
 
+### Our Results
+|  | Train Accuracy | Test Accuracy |
+| :---         |     :---:      |          ---: |
+| Top 5   | 73.93     | 69.11    |
+| Top 3     | 62.13       | 57.19      |
+| Top 1     | 51.32       | 47.60      |
+
 ### Authors
 
 * **[Aayush Maini](https://www.github.com/amaini503)**

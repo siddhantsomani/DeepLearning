@@ -151,23 +151,37 @@ def getTrainingData(batch_size):
     return data,label
 
 #both inputs are of size [batch_size X 384 X 384, 151]
-def calculateKAccuracy(Final_output, targets_, k = 5):
+def calculateKAccuracy(Final_output, targets_, k = 1):
+
+	#vector of ground truth labels per pixel
+	target_labels = tf.cast(tf.argmax(targets_, axis = 1), tf.int64)
 
 	#find the top k most probable labels for each pixel
 	#size of Final_output: [batch_size X 384 X 384, 151]
 	#size of indices: [batch_size X 384 X 384, k]
 	(_, indices) = tf.nn.top_k(Final_output, k = k)
+	indices = tf.cast(indices, tf.int64)
+
+	truth_vector = tf.zeros(shape = (indices.shape[0], ), dtype = tf.int64)
+	
+
+	for i in range(k):
+
+		#compare ith most probable pixel
+		bool_vector = tf.equal(indices[:,i], target_labels)
+
+		truth_vector = truth_vector + tf.cast(bool_vector, tf.int64)
 
 	#per pixel we have k values
-	truth_matrix = tf.equal(indices, tf.argmax(targets_, axis = 1))
+	#truth_matrix = tf.equal(indices, tf.cast(tf.argmax(targets_, axis = 1), tf.int64))
 	
 	#change true, false to 1,0
-	truth_matrix = tf.cast(truth_matrix, tf.float32)
+	truth_vector = tf.cast(truth_vector, tf.float32)
 
 	#any of k predicted labels was right
-	truth_matrix = tf.sum(truth_matrix, axis = 1)
+	# truth_matrix = tf.reduce_sum(truth_matrix, axis = 1)
 
-	return tf.reduce_mean(truth_matrix)
+	return tf.reduce_mean(truth_vector)
 
 
 print("-----------------------------INPUT LAYER-----------------------------------")
@@ -507,7 +521,7 @@ for i in range(training_iters) :
 
         #write to log file
         flogs.write('After {0} steps the accuracy is {1}\n'.format(i, correct))
-        flogs.write('After {0} steps the accuracy is {1}\n'.format(i, correctk))
+        flogs.write('After {0} steps the top 5 accuracy is {1}\n'.format(i, correctk))
 
     if i % CheckpointStep == 0 or i == training_iters - 1:
         save_path = saver.save(sess, checkPointFile, global_step = i + 1)

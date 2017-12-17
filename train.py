@@ -501,10 +501,13 @@ for i in range(training_iters) :
 
 	#restore the model if needed
     if i == 0 and str(sys.argv[1]) == 'restore':
-    
-    	#prints the checkpoint used to restore the model
-    	print(tf.train.latest_checkpoint("Checkpoints/"))
-    	saver.restore(sess, tf.train.latest_checkpoint("Checkpoints/"))
+   	
+	try:  
+    		#prints the checkpoint used to restore the model
+	    	print(tf.train.latest_checkpoint("Checkpoints/"))
+    		saver.restore(sess, tf.train.latest_checkpoint("Checkpoints/"))
+	catch Exception as e:
+		print("Checkpoint was not restored")
     
     data_x, data_y = getTrainingData(batch_size)
     data_x = normalize(data_x)

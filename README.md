@@ -43,6 +43,9 @@ Notes:
 1. Python 2.7 was used. Python 3 might throw errors.
 2. Install any missing required libraries using pip. The code has been tested with the latest version of all requirements.
 
+### Our Architecture:
+<img src="attachments/Architecture.png" width="600"/>
+
 ### Sample results from our model
 <p> Sample results using Validation data</p>
 <p>Sample Validation Image 1</p>

@@ -50,7 +50,7 @@ Notes:
 <p> Annotations from our model</p>
 <img src="attachments/test1_annotation.jpg" width="350"/>
 <p> Original Annotations</p>
-<img src="attachments/test1_annotation_original.png" width="350"/>
+<img src="attachments/test1_annotation_original.jpeg" width="350"/>
 <p> Sample Validation Image 2</p>
 <img src="attachments/test2.png" width="350"/>
 <p> Annotations from our model</p>

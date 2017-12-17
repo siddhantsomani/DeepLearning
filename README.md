@@ -44,14 +44,19 @@ Notes:
 2. Install any missing required libraries using pip. The code has been tested with the latest version of all requirements.
 
 ### Sample results from our model
-<p> Train Image</p>
-<img src="attachments/inference.png" width="350"/>
+<p> Sample results using Validation data</p>
+<p>Sample Validation Image 1</p>
+<img src="attachments/test1.png" width="350"/>
 <p> Annotations from our model</p>
-<img src="attachments/inference_annotations.png" width="350"/>
-<p> Train Image</p>
-<img src="attachments/inference2.jpeg" width="350"/>
+<img src="attachments/test1_annotation.jpg" width="350"/>
+<p> Original Annotations</p>
+<img src="attachments/test1_annotation_original.png" width="350"/>
+<p> Sample Validation Image 2</p>
+<img src="attachments/test2.png" width="350"/>
 <p> Annotations from our model</p>
-<img src="attachments/inference2_annotations.jpeg" width="350"/>
+<img src="attachments/test2_annotation.png" width="350"/>
+<p> Original Annotations</p>
+<img src="attachments/test2_annotation_original.png" width="350"/>
 
 ### Authors
 

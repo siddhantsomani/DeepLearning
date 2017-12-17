@@ -6,6 +6,16 @@
 
 Dataset used: [ADE20K dataset](http://groups.csail.mit.edu/vision/datasets/ADE20K/)
 
+<p>Sample Image 1</p>
+<img src="attachments/Sample1.jpg" width="350"/>
+<p> Annotations</p>
+<img src="attachments/Sample1.png" width="350"/>
+<br>
+<p>Sample Image 2</p>
+<img src="attachments/Sample2.jpg" width="350"/>
+<p> Annotations</p>
+<img src="attachments/Sample2.png" width="350"/>
+
 ### Steps to follow
 
 * Clone the repository using:

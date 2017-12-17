@@ -50,7 +50,7 @@ trainSize = 20000
 start = 0
 
 #logs the step accuracy with timestamp
-fname = "logs/logs-" + str(time.ctime()).replace(" ", "_") + ".txt"
+fname = "logs-" + str(time.ctime()).replace(" ", "_") + ".txt"
 flogs = open(fname,"w")
 
 imageLocation = 'ADEChallengeData2016/images/training/ADE_train_'
@@ -163,7 +163,7 @@ def calculateKAccuracy(Final_output, targets_, k = 1):
 	indices = tf.cast(indices, tf.int64)
 
 	truth_vector = tf.zeros(shape = (indices.shape[0], ), dtype = tf.int64)
-	
+
 
 	for i in range(k):
 
@@ -174,7 +174,7 @@ def calculateKAccuracy(Final_output, targets_, k = 1):
 
 	#per pixel we have k values
 	#truth_matrix = tf.equal(indices, tf.cast(tf.argmax(targets_, axis = 1), tf.int64))
-	
+
 	#change true, false to 1,0
 	truth_vector = tf.cast(truth_vector, tf.float32)
 
@@ -501,14 +501,14 @@ for i in range(training_iters) :
 
 	#restore the model if needed
     if i == 0 and str(sys.argv[1]) == 'restore':
-   	
-	try:  
+
+	try:
     		#prints the checkpoint used to restore the model
 	    	print(tf.train.latest_checkpoint("Checkpoints/"))
     		saver.restore(sess, tf.train.latest_checkpoint("Checkpoints/"))
-	catch Exception as e:
+	except Exception as e:
 		print("Checkpoint was not restored")
-    
+
     data_x, data_y = getTrainingData(batch_size)
     data_x = normalize(data_x)
     data_y = ConvertToOneHotEncoding(data_y, nclass)
@@ -516,7 +516,7 @@ for i in range(training_iters) :
     if i % displayStep == 0 :
         print('{0} steps reached'.format(i))
         (correct, correctk) = sess.run([accuracy, topkaccuracy], feed_dict = {l_in: data_x, targets: data_y})
-        
+
 
         #stdout
         print('After {0} steps the mean pixel accuracy is {1}'.format(i, correct))

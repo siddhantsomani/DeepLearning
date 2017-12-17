@@ -44,13 +44,13 @@ Notes:
 2. Install any missing required libraries using pip. The code has been tested with the latest version of all requirements.
 
 ### Sample results from our model
-<p> Test Image</p>
+<p> Train Image</p>
 <img src="attachments/inference.png" width="350"/>
-<p> Annotations</p>
+<p> Annotations from our model</p>
 <img src="attachments/inference_annotations.png" width="350"/>
-<p> Test Image</p>
+<p> Train Image</p>
 <img src="attachments/inference2.jpeg" width="350"/>
-<p> Annotations</p>
+<p> Annotations from our model</p>
 <img src="attachments/inference2_annotations.jpeg" width="350"/>
 
 ### Authors

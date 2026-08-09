@@ -1,4 +1,4 @@
 scipy==1.10.0
 numpy==1.22.0
-Pillow==12.2.0
+Pillow==12.3.0
 tensorflow==2.12.1
